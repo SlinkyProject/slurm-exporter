@@ -7,4 +7,4 @@ appVersion: "24.11"
 description: Helm Chart for Slurm Prometheus Exporter
 name: slurm-exporter
 type: application
-version: 0.2.0
+version: 0.2.1

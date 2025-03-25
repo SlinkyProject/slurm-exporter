@@ -1,6 +1,6 @@
 # slurm-exporter
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.11](https://img.shields.io/badge/AppVersion-24.11-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 24.11](https://img.shields.io/badge/AppVersion-24.11-informational?style=flat-square)
 
 Helm Chart for Slurm Prometheus Exporter
 

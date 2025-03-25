@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+### Changed
+
+### Removed
+
+## v0.2.1
+
+### Added
+
+### Fixed
+
 - Fixed image tag incorrectly defaulting to appVersion instead of version.
 
 ### Changed
