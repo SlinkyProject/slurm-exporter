@@ -27,7 +27,7 @@ variables:
     - docker info
     - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
     - apk update && apk upgrade
-    - apk add --no-cache git make go helm
+    - apk add --no-cache bash git make go helm
     - export PATH=$PATH:$HOME/go/bin/
     - go env -w GOPRIVATE=github.com/SlinkyProject/*
 
