@@ -52,7 +52,7 @@ spec:
             - --server
             - {{ printf "http://%s.%s:%s" (include "slurm-exporter.restapi.name" .) (include "slurm-exporter.namespace" .) (include "slurm-exporter.restapi.port" .) }}
             - --per-user-metrics 
-            - {{ .Values.exporter.enableUserStats }}
+            - {{ .Values.exporter.enableUserStats | quote }}
             - --cache-freq
             - {{ .Values.exporter.cacheFrequency }}
           ports:
