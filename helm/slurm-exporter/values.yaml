@@ -36,6 +36,12 @@ exporter:
   # The name of the secret containing a token to communicate with the Slurm REST API.
   secretName: ""
   #
+  # Enable per-user metrics data. Enabling this could significantly increase prometheus storage requirements." 
+  enableUserStats: false
+  #
+  # The amount of time to wait between updating the slurm restapi cache. Must be greater than 1s and must be parsable by time.ParseDuration
+  cacheFrequency: "5s"
+  # 
   # -- (integer)
   # Set the number of replicas to deploy.
   replicas: 1

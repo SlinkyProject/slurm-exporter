@@ -51,6 +51,10 @@ spec:
             - /exporter
             - --server
             - {{ printf "http://%s.%s:%s" (include "slurm-exporter.restapi.name" .) (include "slurm-exporter.namespace" .) (include "slurm-exporter.restapi.port" .) }}
+            - --per-user-metrics 
+            - {{ .Values.exporter.enableUserStats }}
+            - --cache-freq
+            - {{ .Values.exporter.cacheFrequency }}
           ports:
             - name: metrics
               containerPort: {{ include "slurm-exporter.port" . }}
