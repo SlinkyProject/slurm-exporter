@@ -25,6 +25,7 @@ Helm Chart for Slurm Prometheus Exporter
 | exporter.serviceMonitor.endpoints[0].path | string | `"/metrics"` |  |
 | exporter.serviceMonitor.endpoints[0].port | string | `"metrics"` |  |
 | exporter.serviceMonitor.endpoints[0].scheme | string | `"http"` |  |
+| exporter.tolerations | object | `[]` |  Set tolerations for Kubernetes Pod scheduling. Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/ |
 | grafana.enabled | bool | `true` |  Enables grafana dashboard. |
 | imagePullSecrets | list | `[]` |  Set the secrets for image pull. Ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
 | nameOverride | string | `""` |  Overrides the name of the release. |
