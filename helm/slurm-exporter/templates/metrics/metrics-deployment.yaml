@@ -32,6 +32,10 @@ spec:
       hostname: {{ include "slurm-exporter.name" . }}
       priorityClassName: {{ .Values.exporter.priorityClassName | default .Values.priorityClassName }}
       automountServiceAccountToken: false
+      {{- if .Values.exporter.tolerations }}
+      tolerations:
+        {{- toYaml .Values.exporter.tolerations | nindent 8 }}
+      {{- end }}
       {{- if .Values.exporter.affinity }}
       affinity:
         {{- .Values.exporter.affinity | toYaml | nindent 8 }}
