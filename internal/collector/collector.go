@@ -11,4 +11,6 @@ var (
 	nodeLabels = []string{"node"}
 
 	partitionLabels = []string{"partition"}
+
+	jobLabels = []string{"job_id", "job_name", "node"}
 )

@@ -5,6 +5,7 @@ package collector
 
 import (
 	"context"
+	"sort"
 	"testing"
 
 	api "github.com/SlinkyProject/slurm-client/api/v0041"
@@ -293,7 +294,9 @@ func TestJobCollector_getJobMetrics(t *testing.T) {
 			args: args{
 				ctx: context.TODO(),
 			},
-			want: &JobMetrics{},
+			want: &JobMetrics{
+				JobIndividualStates: []JobIndividualStates{},
+			},
 		},
 		{
 			name: "test data",
@@ -307,6 +310,12 @@ func TestJobCollector_getJobMetrics(t *testing.T) {
 				JobCount:  4,
 				JobStates: JobStates{Pending: 2, Running: 2, Hold: 1},
 				JobTres:   JobTres{CpusAlloc: 20, MemoryAlloc: 4096},
+				JobIndividualStates: []JobIndividualStates{
+					{JobID: "0", JobName: "test_job_0", Nodes: []string{"node1"}, Running: 1},
+					{JobID: "1", JobName: "test_job_1", Nodes: []string{""}, Pending: 1, Hold: 1},
+					{JobID: "2", JobName: "test_job_2", Nodes: []string{"node2", "node3"}, Running: 1},
+					{JobID: "3", JobName: "test_job_3", Nodes: []string{""}, Pending: 1},
+				},
 			},
 		},
 		{
@@ -331,6 +340,14 @@ func TestJobCollector_getJobMetrics(t *testing.T) {
 				t.Errorf("jobCollector.getJobMetrics() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
+			
+			// Sort JobIndividualStates for consistent comparison
+			if got != nil {
+				sort.Slice(got.JobIndividualStates, func(i, j int) bool {
+					return got.JobIndividualStates[i].JobID < got.JobIndividualStates[j].JobID
+				})
+			}
+			
 			opts := []cmp.Option{
 				cmpopts.IgnoreUnexported(JobMetrics{}),
 				cmpopts.IgnoreFields(JobStates{}, "total"),
