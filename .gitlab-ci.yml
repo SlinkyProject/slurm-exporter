@@ -79,6 +79,7 @@ release-oci:
         exit 1;
       fi
     - echo "$DOCKER_REGISTRY_PASSWORD" | docker login $DOCKER_REGISTRY -u $DOCKER_REGISTRY_USER --password-stdin
+    - make clean
     - make push
   rules:
     - if: $CI_COMMIT_REF_PROTECTED == "true"
