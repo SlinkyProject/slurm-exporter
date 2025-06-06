@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Changed `--server` default to localhost URL.
+- Changed slurm-client version to 0.3.0
 
 ### Removed
 
