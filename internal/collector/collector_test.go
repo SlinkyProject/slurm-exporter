@@ -159,6 +159,7 @@ var (
 var (
 	job0 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
 		JobId:     ptr.To[int32](0),
+		Name:      ptr.To("test_job_0"),
 		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStateRUNNING}),
 		Partition: partition1.Name,
 		JobResources: &api.V0041JobRes{
@@ -169,6 +170,7 @@ var (
 				SelectType *[]api.V0041JobResNodesSelectType "json:\"select_type,omitempty\""
 				Whole      *bool                             "json:\"whole,omitempty\""
 			}{
+				List: ptr.To("node1"),
 				Allocation: &api.V0041JobResNodes{
 					{
 						Cpus: &struct {
@@ -193,6 +195,7 @@ var (
 	}}
 	job1 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
 		JobId:     ptr.To[int32](1),
+		Name:      ptr.To("test_job_1"),
 		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStatePENDING}),
 		Partition: ptr.To(strings.Join([]string{partition1Name, partition2Name}, ",")),
 		Hold:      ptr.To(true),
@@ -205,6 +208,7 @@ var (
 	}}
 	job2 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
 		JobId:     ptr.To[int32](2),
+		Name:      ptr.To("test_job_2"),
 		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStateRUNNING}),
 		Partition: partition2.Name,
 		JobResources: &api.V0041JobRes{
@@ -215,6 +219,7 @@ var (
 				SelectType *[]api.V0041JobResNodesSelectType "json:\"select_type,omitempty\""
 				Whole      *bool                             "json:\"whole,omitempty\""
 			}{
+				List: ptr.To("node2,node3"),
 				Allocation: &api.V0041JobResNodes{
 					{
 						Cpus: &struct {
@@ -252,6 +257,7 @@ var (
 	}}
 	job3 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
 		JobId:     ptr.To[int32](3),
+		Name:      ptr.To("test_job_3"),
 		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStatePENDING}),
 		Partition: ptr.To(partition2Name),
 		NodeCount: &api.V0041Uint32NoValStruct{

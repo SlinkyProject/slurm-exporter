@@ -5,6 +5,7 @@ package collector
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/utils/ptr"
@@ -43,6 +44,28 @@ func NewJobCollector(slurmClient client.Client) prometheus.Collector {
 			// Other States
 			Hold: prometheus.NewDesc("slurm_jobs_hold_total", "Number of jobs with Hold flag", nil, nil),
 		},
+		// Individual Job State Metrics
+		// Base States
+		JobStateBootFail:    prometheus.NewDesc("slurm_job_state_bootfail", "The BootFail state of the job", jobLabels, nil),
+		JobStateCancelled:   prometheus.NewDesc("slurm_job_state_cancelled", "The Cancelled state of the job", jobLabels, nil),
+		JobStateCompleted:   prometheus.NewDesc("slurm_job_state_completed", "The Completed state of the job", jobLabels, nil),
+		JobStateDeadline:    prometheus.NewDesc("slurm_job_state_deadline", "The Deadline state of the job", jobLabels, nil),
+		JobStateFailed:      prometheus.NewDesc("slurm_job_state_failed", "The Failed state of the job", jobLabels, nil),
+		JobStatePending:     prometheus.NewDesc("slurm_job_state_pending", "The Pending state of the job", jobLabels, nil),
+		JobStatePreempted:   prometheus.NewDesc("slurm_job_state_preempted", "The Preempted state of the job", jobLabels, nil),
+		JobStateRunning:     prometheus.NewDesc("slurm_job_state_running", "The Running state of the job", jobLabels, nil),
+		JobStateSuspended:   prometheus.NewDesc("slurm_job_state_suspended", "The Suspended state of the job", jobLabels, nil),
+		JobStateTimeout:     prometheus.NewDesc("slurm_job_state_timeout", "The Timeout state of the job", jobLabels, nil),
+		JobStateNodeFail:    prometheus.NewDesc("slurm_job_state_nodefail", "The NodeFail state of the job", jobLabels, nil),
+		JobStateOutOfMemory: prometheus.NewDesc("slurm_job_state_outofmemory", "The OutOfMemory state of the job", jobLabels, nil),
+		// Flag States
+		JobStateCompleting:  prometheus.NewDesc("slurm_job_state_completing", "The Completing state of the job", jobLabels, nil),
+		JobStateConfiguring: prometheus.NewDesc("slurm_job_state_configuring", "The Configuring state of the job", jobLabels, nil),
+		JobStatePowerUpNode: prometheus.NewDesc("slurm_job_state_powerupnode", "The PowerUpNode state of the job", jobLabels, nil),
+		JobStateStageOut:    prometheus.NewDesc("slurm_job_state_stageout", "The StageOut state of the job", jobLabels, nil),
+		// Other States
+		JobStateHold: prometheus.NewDesc("slurm_job_state_hold", "The Hold state of the job", jobLabels, nil),
+		// Tres
 		JobTres: jobTresCollector{
 			// CPUs
 			CpusAlloc: prometheus.NewDesc("slurm_jobs_cpus_alloc_total", "Number of Allocated CPUs among jobs", nil, nil),
@@ -57,7 +80,29 @@ type jobCollector struct {
 
 	JobCount  *prometheus.Desc
 	JobStates jobStatesCollector
-	JobTres   jobTresCollector
+	// Individual Job State Metrics
+	// Base States
+	JobStateBootFail    *prometheus.Desc
+	JobStateCancelled   *prometheus.Desc
+	JobStateCompleted   *prometheus.Desc
+	JobStateDeadline    *prometheus.Desc
+	JobStateFailed      *prometheus.Desc
+	JobStatePending     *prometheus.Desc
+	JobStatePreempted   *prometheus.Desc
+	JobStateRunning     *prometheus.Desc
+	JobStateSuspended   *prometheus.Desc
+	JobStateTimeout     *prometheus.Desc
+	JobStateNodeFail    *prometheus.Desc
+	JobStateOutOfMemory *prometheus.Desc
+	// Flag States
+	JobStateCompleting  *prometheus.Desc
+	JobStateConfiguring *prometheus.Desc
+	JobStatePowerUpNode *prometheus.Desc
+	JobStateStageOut    *prometheus.Desc
+	// Other States
+	JobStateHold *prometheus.Desc
+	// Tres
+	JobTres jobTresCollector
 }
 
 type jobStatesCollector struct {
@@ -128,6 +173,68 @@ func (c *jobCollector) Collect(ch chan<- prometheus.Metric) {
 	// Tres
 	ch <- prometheus.MustNewConstMetric(c.JobTres.CpusAlloc, prometheus.GaugeValue, float64(metrics.JobTres.CpusAlloc))
 	ch <- prometheus.MustNewConstMetric(c.JobTres.MemoryAlloc, prometheus.GaugeValue, float64(metrics.JobTres.MemoryAlloc))
+
+	// Individual Job State Metrics - only emit when state is active (value = 1)
+	for _, jobState := range metrics.JobIndividualStates {
+		jobID := jobState.JobID
+		jobName := jobState.JobName
+		for _, node := range jobState.Nodes {
+			// Base States
+			if jobState.BootFail == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateBootFail, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Cancelled == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateCancelled, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Completed == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateCompleted, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Deadline == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateDeadline, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Failed == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateFailed, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Pending == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStatePending, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Preempted == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStatePreempted, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Running == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateRunning, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Suspended == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateSuspended, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Timeout == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateTimeout, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.NodeFail == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateNodeFail, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.OutOfMemory == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateOutOfMemory, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			// Flag States
+			if jobState.Completing == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateCompleting, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.Configuring == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateConfiguring, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.PowerUpNode == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStatePowerUpNode, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			if jobState.StageOut == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateStageOut, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+			// Other States
+			if jobState.Hold == 1 {
+				ch <- prometheus.MustNewConstMetric(c.JobStateHold, prometheus.GaugeValue, 1, jobID, jobName, node)
+			}
+		}
+	}
 }
 
 func (c *jobCollector) getJobMetrics(ctx context.Context) (*JobMetrics, error) {
@@ -141,11 +248,17 @@ func (c *jobCollector) getJobMetrics(ctx context.Context) (*JobMetrics, error) {
 
 func calculateJobMetrics(jobList *types.V0041JobInfoList) *JobMetrics {
 	metrics := &JobMetrics{
-		JobCount: uint(len(jobList.Items)),
+		JobCount:            uint(len(jobList.Items)),
+		JobIndividualStates: make([]JobIndividualStates, 0, len(jobList.Items)),
 	}
 	for _, job := range jobList.Items {
 		calculateJobState(&metrics.JobStates, job)
 		calculateJobTres(&metrics.JobTres, job)
+		// Calculate individual job states
+		jobStates := calculateJobIndividualStates(job)
+		if jobStates != nil {
+			metrics.JobIndividualStates = append(metrics.JobIndividualStates, *jobStates)
+		}
 	}
 	return metrics
 }
@@ -230,9 +343,10 @@ func getJobResourceAlloc(job types.V0041JobInfo) jobResources {
 }
 
 type JobMetrics struct {
-	JobCount  uint
-	JobStates JobStates
-	JobTres   JobTres
+	JobCount            uint
+	JobStates           JobStates
+	JobTres             JobTres
+	JobIndividualStates []JobIndividualStates
 }
 
 // Ref: https://slurm.schedmd.com/job_state_codes.html#states
@@ -267,4 +381,111 @@ type JobTres struct {
 	CpusAlloc uint
 	// Memory
 	MemoryAlloc uint
+}
+
+type JobIndividualStates struct {
+	JobID   string
+	JobName string
+	Nodes   []string
+	// Base States
+	BootFail    int
+	Cancelled   int
+	Completed   int
+	Deadline    int
+	Failed      int
+	Pending     int
+	Preempted   int
+	Running     int
+	Suspended   int
+	Timeout     int
+	NodeFail    int
+	OutOfMemory int
+	// Flag States
+	Completing  int
+	Configuring int
+	PowerUpNode int
+	StageOut    int
+	// Other States
+	Hold int
+}
+
+func calculateJobIndividualStates(job types.V0041JobInfo) *JobIndividualStates {
+	states := job.GetStateAsSet()
+	jobID := fmt.Sprintf("%d", ptr.Deref(job.JobId, 0))
+	jobName := ptr.Deref(job.Name, "")
+
+	// Extract node list from job resources
+	nodeList := ""
+	if job.JobResources != nil && job.JobResources.Nodes != nil {
+		nodeList = ptr.Deref(job.JobResources.Nodes.List, "")
+	}
+	nodes := parseNodeList(nodeList)
+
+	// Even if there are no nodes, we still want to emit the metric, as it has the job_name and job_id
+	if len(nodes) == 0 {
+		nodes = []string{""}
+	}
+
+	jobStates := &JobIndividualStates{
+		JobID:   jobID,
+		JobName: jobName,
+		Nodes:   nodes,
+	}
+
+	// Base States
+	if states.Has(api.V0041JobInfoJobStateBOOTFAIL) {
+		jobStates.BootFail = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateCANCELLED) {
+		jobStates.Cancelled = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateCOMPLETED) {
+		jobStates.Completed = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateDEADLINE) {
+		jobStates.Deadline = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateFAILED) {
+		jobStates.Failed = 1
+	}
+	if states.Has(api.V0041JobInfoJobStatePENDING) {
+		jobStates.Pending = 1
+	}
+	if states.Has(api.V0041JobInfoJobStatePREEMPTED) {
+		jobStates.Preempted = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateRUNNING) {
+		jobStates.Running = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateSUSPENDED) {
+		jobStates.Suspended = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateTIMEOUT) {
+		jobStates.Timeout = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateNODEFAIL) {
+		jobStates.NodeFail = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateOUTOFMEMORY) {
+		jobStates.OutOfMemory = 1
+	}
+	// Flag States
+	if states.Has(api.V0041JobInfoJobStateCOMPLETING) {
+		jobStates.Completing = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateCONFIGURING) {
+		jobStates.Configuring = 1
+	}
+	if states.Has(api.V0041JobInfoJobStatePOWERUPNODE) {
+		jobStates.PowerUpNode = 1
+	}
+	if states.Has(api.V0041JobInfoJobStateSTAGEOUT) {
+		jobStates.StageOut = 1
+	}
+	// Other States
+	if isHold := ptr.Deref(job.Hold, false); isHold {
+		jobStates.Hold = 1
+	}
+
+	return jobStates
 }
