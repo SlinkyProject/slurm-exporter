@@ -6,6 +6,16 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+### Fixed
+
+### Changed
+
+### Removed
+
+## v0.3.0
+
+### Added
+
 - Added option to set `--cache-freq`.
 - Added option to set `--zap-log-level`.
 - Added more data fields to existing collections -- expanded node and job
