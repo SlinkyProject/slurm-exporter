@@ -70,7 +70,7 @@ release-oci:
   stage: release
   extends: .docker
   variables:
-    DOCKER_BAKE_REGISTRY: ${DOCKER_REGISTRY}
+    REGISTRY: ${DOCKER_REGISTRY}
   script:
     - set -euo pipefail
     - |
