@@ -27,7 +27,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -a -o ex
 # Ref: https://github.com/GoogleContainerTools/distroless
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
-COPY --from=builder /workspace/exporter /usr/local/bin/exporter
+COPY --from=builder /workspace/exporter .
 USER 65532:65532
 
 ENTRYPOINT ["/exporter"]
