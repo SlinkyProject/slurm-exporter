@@ -60,15 +60,21 @@ func TestNewSlurmClient(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			os.Setenv("SLURM_JWT", tt.args.slurm_jwt)
+			err := os.Setenv("SLURM_JWT", tt.args.slurm_jwt)
+			if err != nil {
+				t.Errorf("Environment could not be set. error=%v", err)
+			}
 			got, err := NewSlurmClient(tt.args.server, tt.args.cacheFreq)
-			os.Unsetenv("SLURM_JWT")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewSlurmClient() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
 				assert.NotNil(t, got)
+			}
+			err = os.Unsetenv("SLURM_JWT")
+			if err != nil {
+				t.Errorf("Environment could not be unset. error=%v", err)
 			}
 		})
 	}
