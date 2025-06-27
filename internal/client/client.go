@@ -40,9 +40,9 @@ func NewSlurmClient(server string, cacheFreq time.Duration) (client.Client, erro
 	// Instruct the client to keep a cache of slurm objects
 	clientOptions := client.ClientOptions{
 		EnableFor: []object.Object{
-			&types.V0041JobInfo{},
-			&types.V0041Node{},
-			&types.V0041PartitionInfo{},
+			&types.V0043JobInfo{},
+			&types.V0043Node{},
+			&types.V0043PartitionInfo{},
 		},
 		CacheSyncPeriod: cacheFreq,
 	}

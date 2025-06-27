@@ -18,7 +18,7 @@ import (
 
 func Test_getJobPendingNodeCount(t *testing.T) {
 	type args struct {
-		job types.V0041JobInfo
+		job types.V0043JobInfo
 	}
 	tests := []struct {
 		name string
@@ -28,7 +28,7 @@ func Test_getJobPendingNodeCount(t *testing.T) {
 		{
 			name: "empty",
 			args: args{
-				job: types.V0041JobInfo{},
+				job: types.V0043JobInfo{},
 			},
 			want: 0,
 		},

@@ -10,7 +10,7 @@ import (
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 	"github.com/SlinkyProject/slurm-client/pkg/client"
 	"github.com/SlinkyProject/slurm-client/pkg/types"
 	"github.com/SlinkyProject/slurm-exporter/internal/utils"
@@ -174,15 +174,15 @@ func (c *partitionCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (c *partitionCollector) getPartitionMetrics(ctx context.Context) (*PartitionMetrics, error) {
-	partitionList := &types.V0041PartitionInfoList{}
+	partitionList := &types.V0043PartitionInfoList{}
 	if err := c.slurmClient.List(ctx, partitionList); err != nil {
 		return nil, err
 	}
-	jobList := &types.V0041JobInfoList{}
+	jobList := &types.V0043JobInfoList{}
 	if err := c.slurmClient.List(ctx, jobList); err != nil {
 		return nil, err
 	}
-	nodeList := &types.V0041NodeList{}
+	nodeList := &types.V0043NodeList{}
 	if err := c.slurmClient.List(ctx, nodeList); err != nil {
 		return nil, err
 	}
@@ -191,9 +191,9 @@ func (c *partitionCollector) getPartitionMetrics(ctx context.Context) (*Partitio
 }
 
 func calculatePartitionMetrics(
-	partitionList *types.V0041PartitionInfoList,
-	nodeList *types.V0041NodeList,
-	jobList *types.V0041JobInfoList,
+	partitionList *types.V0043PartitionInfoList,
+	nodeList *types.V0043NodeList,
+	jobList *types.V0043JobInfoList,
 ) *PartitionMetrics {
 	metrics := &PartitionMetrics{
 		NodeMetricsPer: make(map[string]*NodeMetrics, len(partitionList.Items)),
@@ -234,8 +234,8 @@ func calculatePartitionMetrics(
 
 // getJobPendingNodeCount returns the requested node count if the job is
 // pending, otherwise returns zero.
-func getJobPendingNodeCount(job types.V0041JobInfo) uint {
-	isPending := job.GetStateAsSet().Has(api.V0041JobInfoJobStatePENDING)
+func getJobPendingNodeCount(job types.V0043JobInfo) uint {
+	isPending := job.GetStateAsSet().Has(api.V0043JobInfoJobStatePENDING)
 	isHold := ptr.Deref(job.Hold, false)
 	if !isPending || isHold {
 		return 0

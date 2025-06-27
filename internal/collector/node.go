@@ -10,7 +10,7 @@ import (
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 	"github.com/SlinkyProject/slurm-client/pkg/client"
 	"github.com/SlinkyProject/slurm-client/pkg/types"
 )
@@ -147,7 +147,7 @@ func (c *nodeCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (c *nodeCollector) getNodeMetrics(ctx context.Context) (*NodeCollectorMetrics, error) {
-	nodeList := &types.V0041NodeList{}
+	nodeList := &types.V0043NodeList{}
 	if err := c.slurmClient.List(ctx, nodeList); err != nil {
 		return nil, err
 	}
@@ -155,7 +155,7 @@ func (c *nodeCollector) getNodeMetrics(ctx context.Context) (*NodeCollectorMetri
 	return metrics, nil
 }
 
-func calculateNodeMetrics(nodeList *types.V0041NodeList) *NodeCollectorMetrics {
+func calculateNodeMetrics(nodeList *types.V0043NodeList) *NodeCollectorMetrics {
 	metrics := &NodeCollectorMetrics{
 		NodeMetrics: NodeMetrics{
 			NodeCount: uint(len(nodeList.Items)),
@@ -174,54 +174,54 @@ func calculateNodeMetrics(nodeList *types.V0041NodeList) *NodeCollectorMetrics {
 	return metrics
 }
 
-func calculateNodeState(metrics *NodeStates, node types.V0041Node) {
+func calculateNodeState(metrics *NodeStates, node types.V0043Node) {
 	metrics.total++
 	states := node.GetStateAsSet()
 	// Base States
 	switch {
-	case states.Has(api.V0041NodeStateALLOCATED):
+	case states.Has(api.V0043NodeStateALLOCATED):
 		metrics.Allocated++
-	case states.Has(api.V0041NodeStateDOWN):
+	case states.Has(api.V0043NodeStateDOWN):
 		metrics.Down++
-	case states.Has(api.V0041NodeStateERROR):
+	case states.Has(api.V0043NodeStateERROR):
 		metrics.Error++
-	case states.Has(api.V0041NodeStateFUTURE):
+	case states.Has(api.V0043NodeStateFUTURE):
 		metrics.Future++
-	case states.Has(api.V0041NodeStateIDLE):
+	case states.Has(api.V0043NodeStateIDLE):
 		metrics.Idle++
-	case states.Has(api.V0041NodeStateMIXED):
+	case states.Has(api.V0043NodeStateMIXED):
 		metrics.Mixed++
-	case states.Has(api.V0041NodeStateUNKNOWN):
+	case states.Has(api.V0043NodeStateUNKNOWN):
 		metrics.Unknown++
 	}
 	// Flag States
-	if states.Has(api.V0041NodeStateCOMPLETING) {
+	if states.Has(api.V0043NodeStateCOMPLETING) {
 		metrics.Completing++
 	}
-	if states.Has(api.V0041NodeStateDRAIN) {
+	if states.Has(api.V0043NodeStateDRAIN) {
 		metrics.Drain++
 	}
-	if states.Has(api.V0041NodeStateFAIL) {
+	if states.Has(api.V0043NodeStateFAIL) {
 		metrics.Fail++
 	}
-	if states.Has(api.V0041NodeStateMAINTENANCE) {
+	if states.Has(api.V0043NodeStateMAINTENANCE) {
 		metrics.Maintenance++
 	}
-	if states.Has(api.V0041NodeStateNOTRESPONDING) {
+	if states.Has(api.V0043NodeStateNOTRESPONDING) {
 		metrics.NotResponding++
 	}
-	if states.Has(api.V0041NodeStatePLANNED) {
+	if states.Has(api.V0043NodeStatePLANNED) {
 		metrics.Planned++
 	}
-	if states.Has(api.V0041NodeStateREBOOTREQUESTED) {
+	if states.Has(api.V0043NodeStateREBOOTREQUESTED) {
 		metrics.RebootRequested++
 	}
-	if states.Has(api.V0041NodeStateRESERVED) {
+	if states.Has(api.V0043NodeStateRESERVED) {
 		metrics.Reserved++
 	}
 }
 
-func calculateNodeTres(metrics *NodeTres, node types.V0041Node) {
+func calculateNodeTres(metrics *NodeTres, node types.V0043Node) {
 	metrics.total++
 	// CPUs
 	metrics.CpusTotal += uint(ptr.Deref(node.Cpus, 0))
