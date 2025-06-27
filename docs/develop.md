@@ -7,8 +7,7 @@
 - [Development](#development)
   - [Table of Contents](#table-of-contents)
   - [Build](#build)
-    - [Build the exporter binary](#build-the-exporter-binary)
-    - [Build the container image](#build-the-container-image)
+  - [Deploy](#deploy)
 
 <!-- mdformat-toc end -->
 
@@ -17,18 +16,15 @@
 To build, you need to install build dependencies. To do this, install
 [golang](https://go.dev/doc/install) and make.
 
-### Build the exporter binary
-
-To build the binary:
+To build the OCI container:
 
 ```sh
-make build
+make docker-bake
 ```
 
-### Build the container image
-
-To build the slurm-exporter container image:
+## Deploy
 
 ```sh
-make docker-build docker-push IMG=<registry>/slurm-exporter:<TAG>
+cd helm/slurm-exporter
+skaffold run -p dev
 ```
