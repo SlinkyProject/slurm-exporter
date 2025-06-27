@@ -107,7 +107,7 @@ type UserContext struct {
 }
 
 func (c *userCollector) getUserMetrics(ctx context.Context) (*UserMetrics, error) {
-	jobList := &types.V0041JobInfoList{}
+	jobList := &types.V0043JobInfoList{}
 	if err := c.slurmClient.List(ctx, jobList); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func (c *userCollector) getUserMetrics(ctx context.Context) (*UserMetrics, error
 	return metrics, nil
 }
 
-func calculateUserMetrics(jobList *types.V0041JobInfoList) *UserMetrics {
+func calculateUserMetrics(jobList *types.V0043JobInfoList) *UserMetrics {
 	metrics := &UserMetrics{
 		JobMetricsPer: make(map[UserContext]*JobMetrics),
 	}

@@ -101,7 +101,7 @@ func (c *accountCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (c *accountCollector) getAccountMetrics(ctx context.Context) (*AccountMetrics, error) {
-	jobList := &types.V0041JobInfoList{}
+	jobList := &types.V0043JobInfoList{}
 	if err := c.slurmClient.List(ctx, jobList); err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (c *accountCollector) getAccountMetrics(ctx context.Context) (*AccountMetri
 	return metrics, nil
 }
 
-func calculateAccountMetrics(jobList *types.V0041JobInfoList) *AccountMetrics {
+func calculateAccountMetrics(jobList *types.V0043JobInfoList) *AccountMetrics {
 	metrics := &AccountMetrics{
 		JobMetricsPer: make(map[string]*JobMetrics),
 	}

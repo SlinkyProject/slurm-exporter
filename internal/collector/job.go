@@ -10,7 +10,7 @@ import (
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 	"github.com/SlinkyProject/slurm-client/pkg/client"
 	"github.com/SlinkyProject/slurm-client/pkg/types"
 )
@@ -131,7 +131,7 @@ func (c *jobCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (c *jobCollector) getJobMetrics(ctx context.Context) (*JobMetrics, error) {
-	jobList := &types.V0041JobInfoList{}
+	jobList := &types.V0043JobInfoList{}
 	if err := c.slurmClient.List(ctx, jobList); err != nil {
 		return nil, err
 	}
@@ -139,7 +139,7 @@ func (c *jobCollector) getJobMetrics(ctx context.Context) (*JobMetrics, error) {
 	return metrics, nil
 }
 
-func calculateJobMetrics(jobList *types.V0041JobInfoList) *JobMetrics {
+func calculateJobMetrics(jobList *types.V0043JobInfoList) *JobMetrics {
 	metrics := &JobMetrics{
 		JobCount: uint(len(jobList.Items)),
 	}
@@ -150,47 +150,47 @@ func calculateJobMetrics(jobList *types.V0041JobInfoList) *JobMetrics {
 	return metrics
 }
 
-func calculateJobState(metrics *JobStates, job types.V0041JobInfo) {
+func calculateJobState(metrics *JobStates, job types.V0043JobInfo) {
 	metrics.total++
 	states := job.GetStateAsSet()
 	// Base States
 	switch {
-	case states.Has(api.V0041JobInfoJobStateBOOTFAIL):
+	case states.Has(api.V0043JobInfoJobStateBOOTFAIL):
 		metrics.BootFail++
-	case states.Has(api.V0041JobInfoJobStateCANCELLED):
+	case states.Has(api.V0043JobInfoJobStateCANCELLED):
 		metrics.Cancelled++
-	case states.Has(api.V0041JobInfoJobStateCOMPLETED):
+	case states.Has(api.V0043JobInfoJobStateCOMPLETED):
 		metrics.Completed++
-	case states.Has(api.V0041JobInfoJobStateDEADLINE):
+	case states.Has(api.V0043JobInfoJobStateDEADLINE):
 		metrics.Deadline++
-	case states.Has(api.V0041JobInfoJobStateFAILED):
+	case states.Has(api.V0043JobInfoJobStateFAILED):
 		metrics.Failed++
-	case states.Has(api.V0041JobInfoJobStatePENDING):
+	case states.Has(api.V0043JobInfoJobStatePENDING):
 		metrics.Pending++
-	case states.Has(api.V0041JobInfoJobStatePREEMPTED):
+	case states.Has(api.V0043JobInfoJobStatePREEMPTED):
 		metrics.Preempted++
-	case states.Has(api.V0041JobInfoJobStateRUNNING):
+	case states.Has(api.V0043JobInfoJobStateRUNNING):
 		metrics.Running++
-	case states.Has(api.V0041JobInfoJobStateSUSPENDED):
+	case states.Has(api.V0043JobInfoJobStateSUSPENDED):
 		metrics.Suspended++
-	case states.Has(api.V0041JobInfoJobStateTIMEOUT):
+	case states.Has(api.V0043JobInfoJobStateTIMEOUT):
 		metrics.Timeout++
-	case states.Has(api.V0041JobInfoJobStateNODEFAIL):
+	case states.Has(api.V0043JobInfoJobStateNODEFAIL):
 		metrics.NodeFail++
-	case states.Has(api.V0041JobInfoJobStateOUTOFMEMORY):
+	case states.Has(api.V0043JobInfoJobStateOUTOFMEMORY):
 		metrics.OutOfMemory++
 	}
 	// Flag States
-	if states.Has(api.V0041JobInfoJobStateCOMPLETING) {
+	if states.Has(api.V0043JobInfoJobStateCOMPLETING) {
 		metrics.Completing++
 	}
-	if states.Has(api.V0041JobInfoJobStateCONFIGURING) {
+	if states.Has(api.V0043JobInfoJobStateCONFIGURING) {
 		metrics.Configuring++
 	}
-	if states.Has(api.V0041JobInfoJobStatePOWERUPNODE) {
+	if states.Has(api.V0043JobInfoJobStatePOWERUPNODE) {
 		metrics.PowerUpNode++
 	}
-	if states.Has(api.V0041JobInfoJobStateSTAGEOUT) {
+	if states.Has(api.V0043JobInfoJobStateSTAGEOUT) {
 		metrics.StageOut++
 	}
 	// Other States
@@ -199,7 +199,7 @@ func calculateJobState(metrics *JobStates, job types.V0041JobInfo) {
 	}
 }
 
-func calculateJobTres(metrics *JobTres, job types.V0041JobInfo) {
+func calculateJobTres(metrics *JobTres, job types.V0043JobInfo) {
 	metrics.total++
 	res := getJobResourceAlloc(job)
 	metrics.CpusAlloc += res.Cpus
@@ -211,13 +211,13 @@ type jobResources struct {
 	Memory uint
 }
 
-func getJobResourceAlloc(job types.V0041JobInfo) jobResources {
+func getJobResourceAlloc(job types.V0043JobInfo) jobResources {
 	var res jobResources
-	jobRes := ptr.Deref(job.JobResources, api.V0041JobRes{})
+	jobRes := ptr.Deref(job.JobResources, api.V0043JobRes{})
 	if jobRes.Nodes == nil {
 		return res
 	}
-	jobResNode := ptr.Deref(jobRes.Nodes.Allocation, []api.V0041JobResNode{})
+	jobResNode := ptr.Deref(jobRes.Nodes.Allocation, []api.V0043JobResNode{})
 	for _, resNode := range jobResNode {
 		if resNode.Cpus != nil {
 			res.Cpus += uint(ptr.Deref(resNode.Cpus.Count, 0))

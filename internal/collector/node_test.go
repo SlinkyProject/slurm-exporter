@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 	"github.com/SlinkyProject/slurm-client/pkg/client"
 	"github.com/SlinkyProject/slurm-client/pkg/client/fake"
 	"github.com/SlinkyProject/slurm-client/pkg/types"
@@ -20,7 +20,7 @@ import (
 
 func Test_calculateNodeState(t *testing.T) {
 	type args struct {
-		node types.V0041Node
+		node types.V0043Node
 	}
 	tests := []struct {
 		name string
@@ -34,9 +34,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "allocated",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateALLOCATED,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateALLOCATED,
 					}),
 				}},
 			},
@@ -45,9 +45,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "down",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateDOWN,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateDOWN,
 					}),
 				}},
 			},
@@ -56,9 +56,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "error",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateERROR,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateERROR,
 					}),
 				}},
 			},
@@ -67,9 +67,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "future",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateFUTURE,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateFUTURE,
 					}),
 				}},
 			},
@@ -78,9 +78,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "idle",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateIDLE,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateIDLE,
 					}),
 				}},
 			},
@@ -89,9 +89,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "mixed",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateMIXED,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateMIXED,
 					}),
 				}},
 			},
@@ -100,9 +100,9 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "unknown",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateUNKNOWN,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateUNKNOWN,
 					}),
 				}},
 			},
@@ -111,38 +111,38 @@ func Test_calculateNodeState(t *testing.T) {
 		{
 			name: "all states, all flags",
 			args: args{
-				node: types.V0041Node{V0041Node: api.V0041Node{
-					State: ptr.To([]api.V0041NodeState{
-						api.V0041NodeStateALLOCATED,
-						api.V0041NodeStateCLOUD,
-						api.V0041NodeStateCOMPLETING,
-						api.V0041NodeStateDOWN,
-						api.V0041NodeStateDRAIN,
-						api.V0041NodeStateDYNAMICFUTURE,
-						api.V0041NodeStateDYNAMICNORM,
-						api.V0041NodeStateERROR,
-						api.V0041NodeStateFAIL,
-						api.V0041NodeStateFUTURE,
-						api.V0041NodeStateIDLE,
-						api.V0041NodeStateINVALID,
-						api.V0041NodeStateINVALIDREG,
-						api.V0041NodeStateMAINTENANCE,
-						api.V0041NodeStateMIXED,
-						api.V0041NodeStateNOTRESPONDING,
-						api.V0041NodeStatePLANNED,
-						api.V0041NodeStatePOWERDOWN,
-						api.V0041NodeStatePOWERDRAIN,
-						api.V0041NodeStatePOWEREDDOWN,
-						api.V0041NodeStatePOWERINGDOWN,
-						api.V0041NodeStatePOWERINGUP,
-						api.V0041NodeStatePOWERUP,
-						api.V0041NodeStateREBOOTCANCELED,
-						api.V0041NodeStateREBOOTISSUED,
-						api.V0041NodeStateREBOOTREQUESTED,
-						api.V0041NodeStateRESERVED,
-						api.V0041NodeStateRESUME,
-						api.V0041NodeStateUNDRAIN,
-						api.V0041NodeStateUNKNOWN,
+				node: types.V0043Node{V0043Node: api.V0043Node{
+					State: ptr.To([]api.V0043NodeState{
+						api.V0043NodeStateALLOCATED,
+						api.V0043NodeStateCLOUD,
+						api.V0043NodeStateCOMPLETING,
+						api.V0043NodeStateDOWN,
+						api.V0043NodeStateDRAIN,
+						api.V0043NodeStateDYNAMICFUTURE,
+						api.V0043NodeStateDYNAMICNORM,
+						api.V0043NodeStateERROR,
+						api.V0043NodeStateFAIL,
+						api.V0043NodeStateFUTURE,
+						api.V0043NodeStateIDLE,
+						api.V0043NodeStateINVALID,
+						api.V0043NodeStateINVALIDREG,
+						api.V0043NodeStateMAINTENANCE,
+						api.V0043NodeStateMIXED,
+						api.V0043NodeStateNOTRESPONDING,
+						api.V0043NodeStatePLANNED,
+						api.V0043NodeStatePOWERDOWN,
+						api.V0043NodeStatePOWERDRAIN,
+						api.V0043NodeStatePOWEREDDOWN,
+						api.V0043NodeStatePOWERINGDOWN,
+						api.V0043NodeStatePOWERINGUP,
+						api.V0043NodeStatePOWERUP,
+						api.V0043NodeStateREBOOTCANCELED,
+						api.V0043NodeStateREBOOTISSUED,
+						api.V0043NodeStateREBOOTREQUESTED,
+						api.V0043NodeStateRESERVED,
+						api.V0043NodeStateRESUME,
+						api.V0043NodeStateUNDRAIN,
+						api.V0043NodeStateUNKNOWN,
 					}),
 				}},
 			},
@@ -176,7 +176,7 @@ func Test_calculateNodeState(t *testing.T) {
 
 func Test_calculateNodeTres(t *testing.T) {
 	type args struct {
-		node types.V0041Node
+		node types.V0043Node
 	}
 	tests := []struct {
 		name string

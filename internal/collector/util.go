@@ -8,10 +8,10 @@ import (
 
 	"k8s.io/utils/ptr"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 )
 
-func ParseUint64NoVal(noVal *api.V0041Uint64NoValStruct) uint64 {
+func ParseUint64NoVal(noVal *api.V0043Uint64NoValStruct) uint64 {
 	if noVal == nil {
 		return 0
 	}
@@ -25,7 +25,7 @@ func ParseUint64NoVal(noVal *api.V0041Uint64NoValStruct) uint64 {
 	return number
 }
 
-func ParseUint32NoVal(noVal *api.V0041Uint32NoValStruct) uint32 {
+func ParseUint32NoVal(noVal *api.V0043Uint32NoValStruct) uint32 {
 	if noVal == nil {
 		return 0
 	}

@@ -253,7 +253,7 @@ func (c *schedulerCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func (c *schedulerCollector) getSchedulerMetrics(ctx context.Context) (*SchedulerMetrics, error) {
-	statsList := &types.V0041StatsList{}
+	statsList := &types.V0043StatsList{}
 	if err := c.slurmClient.List(ctx, statsList); err != nil {
 		return nil, err
 	}
@@ -261,7 +261,7 @@ func (c *schedulerCollector) getSchedulerMetrics(ctx context.Context) (*Schedule
 	return metrics, nil
 }
 
-func calculateSchedulerMetrics(statsList *types.V0041StatsList) *SchedulerMetrics {
+func calculateSchedulerMetrics(statsList *types.V0043StatsList) *SchedulerMetrics {
 	metrics := &SchedulerMetrics{}
 	// NOTE: 0 <= len(statsList.Items) <= 1
 	for _, stats := range statsList.Items {
@@ -270,7 +270,7 @@ func calculateSchedulerMetrics(statsList *types.V0041StatsList) *SchedulerMetric
 	return metrics
 }
 
-func calculateSchedulerStats(metrics *SchedulerMetrics, stats types.V0041Stats) {
+func calculateSchedulerStats(metrics *SchedulerMetrics, stats types.V0043Stats) {
 	metrics.ScheduleCycleDepth = ptr.Deref(stats.ScheduleCycleDepth, 0)
 	metrics.ScheduleCycleLast = ptr.Deref(stats.ScheduleCycleLast, 0)
 	metrics.ScheduleCycleMax = ptr.Deref(stats.ScheduleCycleMax, 0)

@@ -88,7 +88,7 @@ Currently only a minimal set of metrics are collected. More metrics may be added
 in the future.
 
 - **Slurm Version**: >=
-  [24.05](https://www.schedmd.com/slurm-version-24-05-0-is-now-available/)
+  [25.05](https://www.schedmd.com/slurm-version-25-05-0-is-now-available/)
 
 ## Installation
 

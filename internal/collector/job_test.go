@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 	"github.com/SlinkyProject/slurm-client/pkg/client"
 	"github.com/SlinkyProject/slurm-client/pkg/client/fake"
 	"github.com/SlinkyProject/slurm-client/pkg/types"
@@ -21,7 +21,7 @@ import (
 
 func Test_getJobResourceAlloc(t *testing.T) {
 	type args struct {
-		job types.V0041JobInfo
+		job types.V0043JobInfo
 	}
 	tests := []struct {
 		name string
@@ -31,7 +31,7 @@ func Test_getJobResourceAlloc(t *testing.T) {
 		{
 			name: "empty",
 			args: args{
-				job: types.V0041JobInfo{},
+				job: types.V0043JobInfo{},
 			},
 			want: jobResources{},
 		},
@@ -67,7 +67,7 @@ func Test_getJobResourceAlloc(t *testing.T) {
 
 func Test_calculateJobState(t *testing.T) {
 	type args struct {
-		job types.V0041JobInfo
+		job types.V0043JobInfo
 	}
 	tests := []struct {
 		name string
@@ -81,9 +81,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "boot fail",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateBOOTFAIL,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateBOOTFAIL,
 					}),
 				}},
 			},
@@ -92,9 +92,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "cancelled",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateCANCELLED,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateCANCELLED,
 					}),
 				}},
 			},
@@ -103,9 +103,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "completed",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateCOMPLETED,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateCOMPLETED,
 					}),
 				}},
 			},
@@ -114,9 +114,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "deadline",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateDEADLINE,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateDEADLINE,
 					}),
 				}},
 			},
@@ -125,9 +125,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "failed",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateFAILED,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateFAILED,
 					}),
 				}},
 			},
@@ -136,9 +136,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "pending",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStatePENDING,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStatePENDING,
 					}),
 				}},
 			},
@@ -147,9 +147,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "preempted",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStatePREEMPTED,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStatePREEMPTED,
 					}),
 				}},
 			},
@@ -158,9 +158,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "running",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateRUNNING,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateRUNNING,
 					}),
 				}},
 			},
@@ -169,9 +169,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "suspended",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateSUSPENDED,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateSUSPENDED,
 					}),
 				}},
 			},
@@ -180,9 +180,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "timeout",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateTIMEOUT,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateTIMEOUT,
 					}),
 				}},
 			},
@@ -191,9 +191,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "node fail",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateNODEFAIL,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateNODEFAIL,
 					}),
 				}},
 			},
@@ -202,9 +202,9 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "out of memory",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateOUTOFMEMORY,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateOUTOFMEMORY,
 					}),
 				}},
 			},
@@ -213,36 +213,35 @@ func Test_calculateJobState(t *testing.T) {
 		{
 			name: "all states, all flags",
 			args: args{
-				job: types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
-					JobState: ptr.To([]api.V0041JobInfoJobState{
-						api.V0041JobInfoJobStateBOOTFAIL,
-						api.V0041JobInfoJobStateCANCELLED,
-						api.V0041JobInfoJobStateCOMPLETED,
-						api.V0041JobInfoJobStateCOMPLETING,
-						api.V0041JobInfoJobStateCONFIGURING,
-						api.V0041JobInfoJobStateDEADLINE,
-						api.V0041JobInfoJobStateFAILED,
-						api.V0041JobInfoJobStateLAUNCHFAILED,
-						api.V0041JobInfoJobStateNODEFAIL,
-						api.V0041JobInfoJobStateOUTOFMEMORY,
-						api.V0041JobInfoJobStatePENDING,
-						api.V0041JobInfoJobStatePOWERUPNODE,
-						api.V0041JobInfoJobStatePREEMPTED,
-						api.V0041JobInfoJobStateRECONFIGFAIL,
-						api.V0041JobInfoJobStateREQUEUED,
-						api.V0041JobInfoJobStateREQUEUEFED,
-						api.V0041JobInfoJobStateREQUEUEHOLD,
-						api.V0041JobInfoJobStateRESIZING,
-						api.V0041JobInfoJobStateRESVDELHOLD,
-						api.V0041JobInfoJobStateREVOKED,
-						api.V0041JobInfoJobStateRUNNING,
-						api.V0041JobInfoJobStateSIGNALING,
-						api.V0041JobInfoJobStateSPECIALEXIT,
-						api.V0041JobInfoJobStateSTAGEOUT,
-						api.V0041JobInfoJobStateSTOPPED,
-						api.V0041JobInfoJobStateSUSPENDED,
-						api.V0041JobInfoJobStateTIMEOUT,
-						api.V0041JobInfoJobStateUPDATEDB,
+				job: types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
+					JobState: ptr.To([]api.V0043JobInfoJobState{
+						api.V0043JobInfoJobStateBOOTFAIL,
+						api.V0043JobInfoJobStateCANCELLED,
+						api.V0043JobInfoJobStateCOMPLETED,
+						api.V0043JobInfoJobStateCOMPLETING,
+						api.V0043JobInfoJobStateCONFIGURING,
+						api.V0043JobInfoJobStateDEADLINE,
+						api.V0043JobInfoJobStateFAILED,
+						api.V0043JobInfoJobStateLAUNCHFAILED,
+						api.V0043JobInfoJobStateNODEFAIL,
+						api.V0043JobInfoJobStateOUTOFMEMORY,
+						api.V0043JobInfoJobStatePENDING,
+						api.V0043JobInfoJobStatePOWERUPNODE,
+						api.V0043JobInfoJobStatePREEMPTED,
+						api.V0043JobInfoJobStateRECONFIGFAIL,
+						api.V0043JobInfoJobStateREQUEUED,
+						api.V0043JobInfoJobStateREQUEUEFED,
+						api.V0043JobInfoJobStateREQUEUEHOLD,
+						api.V0043JobInfoJobStateRESIZING,
+						api.V0043JobInfoJobStateRESVDELHOLD,
+						api.V0043JobInfoJobStateREVOKED,
+						api.V0043JobInfoJobStateRUNNING,
+						api.V0043JobInfoJobStateSIGNALING,
+						api.V0043JobInfoJobStateSPECIALEXIT,
+						api.V0043JobInfoJobStateSTAGEOUT,
+						api.V0043JobInfoJobStateSTOPPED,
+						api.V0043JobInfoJobStateSUSPENDED,
+						api.V0043JobInfoJobStateTIMEOUT,
 					}),
 					Hold: ptr.To(true),
 				}},

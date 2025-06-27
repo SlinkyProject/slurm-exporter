@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	api "github.com/SlinkyProject/slurm-client/api/v0041"
+	api "github.com/SlinkyProject/slurm-client/api/v0043"
 	"github.com/SlinkyProject/slurm-client/pkg/client"
 	"github.com/SlinkyProject/slurm-client/pkg/client/fake"
 	"github.com/SlinkyProject/slurm-client/pkg/client/interceptor"
@@ -24,13 +24,13 @@ const (
 )
 
 var (
-	partition1 = &types.V0041PartitionInfo{V0041PartitionInfo: api.V0041PartitionInfo{
+	partition1 = &types.V0043PartitionInfo{V0043PartitionInfo: api.V0043PartitionInfo{
 		Name: ptr.To(partition1Name),
 		Partition: &struct {
-			State *[]api.V0041PartitionInfoPartitionState "json:\"state,omitempty\""
+			State *[]api.V0043PartitionInfoPartitionState "json:\"state,omitempty\""
 		}{
-			State: ptr.To([]api.V0041PartitionInfoPartitionState{
-				api.V0041PartitionInfoPartitionStateUP,
+			State: ptr.To([]api.V0043PartitionInfoPartitionState{
+				api.V0043PartitionInfoPartitionStateUP,
 			}),
 		},
 		Cpus: &struct {
@@ -47,13 +47,13 @@ var (
 			Total: ptr.To[int32](3),
 		},
 	}}
-	partition2 = &types.V0041PartitionInfo{V0041PartitionInfo: api.V0041PartitionInfo{
+	partition2 = &types.V0043PartitionInfo{V0043PartitionInfo: api.V0043PartitionInfo{
 		Name: ptr.To(partition2Name),
 		Partition: &struct {
-			State *[]api.V0041PartitionInfoPartitionState "json:\"state,omitempty\""
+			State *[]api.V0043PartitionInfoPartitionState "json:\"state,omitempty\""
 		}{
-			State: ptr.To([]api.V0041PartitionInfoPartitionState{
-				api.V0041PartitionInfoPartitionStateDOWN,
+			State: ptr.To([]api.V0043PartitionInfoPartitionState{
+				api.V0043PartitionInfoPartitionStateDOWN,
 			}),
 		},
 		Cpus: &struct {
@@ -70,19 +70,19 @@ var (
 			Total: ptr.To[int32](3),
 		},
 	}}
-	partitionList = &types.V0041PartitionInfoList{
-		Items: []types.V0041PartitionInfo{
+	partitionList = &types.V0043PartitionInfoList{
+		Items: []types.V0043PartitionInfo{
 			*partition1, *partition2,
 		},
 	}
 )
 
 var (
-	node0 = &types.V0041Node{V0041Node: api.V0041Node{
+	node0 = &types.V0043Node{V0043Node: api.V0043Node{
 		Name:       ptr.To("node0"),
-		Partitions: ptr.To(api.V0041CsvString{partition1Name}),
-		State: ptr.To([]api.V0041NodeState{
-			api.V0041NodeStateIDLE,
+		Partitions: ptr.To(api.V0043CsvString{partition1Name}),
+		State: ptr.To([]api.V0043NodeState{
+			api.V0043NodeStateIDLE,
 		}),
 		Cpus:              ptr.To[int32](16),
 		EffectiveCpus:     ptr.To[int32](14),
@@ -91,16 +91,16 @@ var (
 		RealMemory:        ptr.To[int64](4096),
 		SpecializedMemory: ptr.To[int64](1024),
 		AllocMemory:       ptr.To[int64](0),
-		FreeMem: &api.V0041Uint64NoValStruct{
+		FreeMem: &api.V0043Uint64NoValStruct{
 			Number: ptr.To[int64](4096),
 			Set:    ptr.To(true),
 		},
 	}}
-	node1 = &types.V0041Node{V0041Node: api.V0041Node{
+	node1 = &types.V0043Node{V0043Node: api.V0043Node{
 		Name:       ptr.To("node1"),
-		Partitions: ptr.To(api.V0041CsvString{partition1Name, partition2Name}),
-		State: ptr.To([]api.V0041NodeState{
-			api.V0041NodeStateALLOCATED,
+		Partitions: ptr.To(api.V0043CsvString{partition1Name, partition2Name}),
+		State: ptr.To([]api.V0043NodeState{
+			api.V0043NodeStateALLOCATED,
 		}),
 		Cpus:          ptr.To[int32](8),
 		EffectiveCpus: ptr.To[int32](8),
@@ -108,17 +108,17 @@ var (
 		AllocIdleCpus: ptr.To[int32](0),
 		RealMemory:    ptr.To[int64](2048),
 		AllocMemory:   ptr.To[int64](2000),
-		FreeMem: &api.V0041Uint64NoValStruct{
+		FreeMem: &api.V0043Uint64NoValStruct{
 			Number: ptr.To[int64](48),
 			Set:    ptr.To(true),
 		},
 	}}
-	node2 = &types.V0041Node{V0041Node: api.V0041Node{
+	node2 = &types.V0043Node{V0043Node: api.V0043Node{
 		Name:       ptr.To("node2"),
-		Partitions: ptr.To(api.V0041CsvString{partition1Name, partition2Name}),
-		State: ptr.To([]api.V0041NodeState{
-			api.V0041NodeStateALLOCATED,
-			api.V0041NodeStateDRAIN,
+		Partitions: ptr.To(api.V0043CsvString{partition1Name, partition2Name}),
+		State: ptr.To([]api.V0043NodeState{
+			api.V0043NodeStateALLOCATED,
+			api.V0043NodeStateDRAIN,
 		}),
 		Cpus:          ptr.To[int32](16),
 		EffectiveCpus: ptr.To[int32](16),
@@ -126,17 +126,17 @@ var (
 		AllocIdleCpus: ptr.To[int32](0),
 		RealMemory:    ptr.To[int64](4096),
 		AllocMemory:   ptr.To[int64](3000),
-		FreeMem: &api.V0041Uint64NoValStruct{
+		FreeMem: &api.V0043Uint64NoValStruct{
 			Number: ptr.To[int64](1096),
 			Set:    ptr.To(true),
 		},
 	}}
-	node3 = &types.V0041Node{V0041Node: api.V0041Node{
+	node3 = &types.V0043Node{V0043Node: api.V0043Node{
 		Name:       ptr.To("node3"),
-		Partitions: ptr.To(api.V0041CsvString{partition2Name}),
-		State: ptr.To([]api.V0041NodeState{
-			api.V0041NodeStateMIXED,
-			api.V0041NodeStateCOMPLETING,
+		Partitions: ptr.To(api.V0043CsvString{partition2Name}),
+		State: ptr.To([]api.V0043NodeState{
+			api.V0043NodeStateMIXED,
+			api.V0043NodeStateCOMPLETING,
 		}),
 		Cpus:          ptr.To[int32](6),
 		EffectiveCpus: ptr.To[int32](6),
@@ -144,32 +144,32 @@ var (
 		AllocIdleCpus: ptr.To[int32](2),
 		RealMemory:    ptr.To[int64](1024),
 		AllocMemory:   ptr.To[int64](800),
-		FreeMem: &api.V0041Uint64NoValStruct{
+		FreeMem: &api.V0043Uint64NoValStruct{
 			Number: ptr.To[int64](224),
 			Set:    ptr.To(true),
 		},
 	}}
-	nodeList = &types.V0041NodeList{
-		Items: []types.V0041Node{
+	nodeList = &types.V0043NodeList{
+		Items: []types.V0043Node{
 			*node0, *node1, *node2, *node3,
 		},
 	}
 )
 
 var (
-	job0 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
+	job0 = &types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
 		JobId:     ptr.To[int32](0),
-		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStateRUNNING}),
+		JobState:  ptr.To([]api.V0043JobInfoJobState{api.V0043JobInfoJobStateRUNNING}),
 		Partition: partition1.Name,
-		JobResources: &api.V0041JobRes{
+		JobResources: &api.V0043JobRes{
 			Nodes: &struct {
-				Allocation *api.V0041JobResNodes             "json:\"allocation,omitempty\""
+				Allocation *api.V0043JobResNodes             "json:\"allocation,omitempty\""
 				Count      *int32                            "json:\"count,omitempty\""
 				List       *string                           "json:\"list,omitempty\""
-				SelectType *[]api.V0041JobResNodesSelectType "json:\"select_type,omitempty\""
+				SelectType *[]api.V0043JobResNodesSelectType "json:\"select_type,omitempty\""
 				Whole      *bool                             "json:\"whole,omitempty\""
 			}{
-				Allocation: &api.V0041JobResNodes{
+				Allocation: &api.V0043JobResNodes{
 					{
 						Cpus: &struct {
 							Count *int32 "json:\"count,omitempty\""
@@ -191,31 +191,31 @@ var (
 		UserName: ptr.To("root"),
 		Account:  ptr.To("root"),
 	}}
-	job1 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
+	job1 = &types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
 		JobId:     ptr.To[int32](1),
-		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStatePENDING}),
+		JobState:  ptr.To([]api.V0043JobInfoJobState{api.V0043JobInfoJobStatePENDING}),
 		Partition: ptr.To(strings.Join([]string{partition1Name, partition2Name}, ",")),
 		Hold:      ptr.To(true),
-		NodeCount: &api.V0041Uint32NoValStruct{
+		NodeCount: &api.V0043Uint32NoValStruct{
 			Number: ptr.To[int32](3),
 			Set:    ptr.To(true),
 		},
 		UserId:   ptr.To[int32](0),
 		UserName: ptr.To("root"),
 	}}
-	job2 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
+	job2 = &types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
 		JobId:     ptr.To[int32](2),
-		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStateRUNNING}),
+		JobState:  ptr.To([]api.V0043JobInfoJobState{api.V0043JobInfoJobStateRUNNING}),
 		Partition: partition2.Name,
-		JobResources: &api.V0041JobRes{
+		JobResources: &api.V0043JobRes{
 			Nodes: &struct {
-				Allocation *api.V0041JobResNodes             "json:\"allocation,omitempty\""
+				Allocation *api.V0043JobResNodes             "json:\"allocation,omitempty\""
 				Count      *int32                            "json:\"count,omitempty\""
 				List       *string                           "json:\"list,omitempty\""
-				SelectType *[]api.V0041JobResNodesSelectType "json:\"select_type,omitempty\""
+				SelectType *[]api.V0043JobResNodesSelectType "json:\"select_type,omitempty\""
 				Whole      *bool                             "json:\"whole,omitempty\""
 			}{
-				Allocation: &api.V0041JobResNodes{
+				Allocation: &api.V0043JobResNodes{
 					{
 						Cpus: &struct {
 							Count *int32 "json:\"count,omitempty\""
@@ -250,25 +250,25 @@ var (
 		UserId:  ptr.To[int32](1000),
 		Account: ptr.To("root"),
 	}}
-	job3 = &types.V0041JobInfo{V0041JobInfo: api.V0041JobInfo{
+	job3 = &types.V0043JobInfo{V0043JobInfo: api.V0043JobInfo{
 		JobId:     ptr.To[int32](3),
-		JobState:  ptr.To([]api.V0041JobInfoJobState{api.V0041JobInfoJobStatePENDING}),
+		JobState:  ptr.To([]api.V0043JobInfoJobState{api.V0043JobInfoJobStatePENDING}),
 		Partition: ptr.To(partition2Name),
-		NodeCount: &api.V0041Uint32NoValStruct{
+		NodeCount: &api.V0043Uint32NoValStruct{
 			Number: ptr.To[int32](2),
 			Set:    ptr.To(true),
 		},
 		UserId: ptr.To[int32](1000),
 	}}
-	jobList = &types.V0041JobInfoList{
-		Items: []types.V0041JobInfo{
+	jobList = &types.V0043JobInfoList{
+		Items: []types.V0043JobInfo{
 			*job0, *job1, *job2, *job3,
 		},
 	}
 )
 
 var (
-	stats = &types.V0041Stats{V0041StatsMsg: api.V0041StatsMsg{
+	stats = &types.V0043Stats{V0043StatsMsg: api.V0043StatsMsg{
 		ScheduleCycleDepth:     ptr.To[int32](1),
 		ScheduleCycleLast:      ptr.To[int32](1),
 		ScheduleCycleMax:       ptr.To[int32](1),
@@ -278,7 +278,7 @@ var (
 		ScheduleCycleSum:       ptr.To[int32](1),
 		ScheduleCycleTotal:     ptr.To[int32](1),
 		ScheduleQueueLength:    ptr.To[int32](1),
-		ScheduleExit: &api.V0041ScheduleExitFields{
+		ScheduleExit: &api.V0043ScheduleExitFields{
 			DefaultQueueDepth: ptr.To[int32](2),
 			EndJobQueue:       ptr.To[int32](2),
 			Licenses:          ptr.To[int32](2),
@@ -308,12 +308,12 @@ var (
 		BfTableSize:          ptr.To[int32](3),
 		BfTableSizeMean:      ptr.To[int64](3),
 		BfTableSizeSum:       ptr.To[int32](3),
-		BfWhenLastCycle: &api.V0041Uint64NoValStruct{
+		BfWhenLastCycle: &api.V0043Uint64NoValStruct{
 			Number: ptr.To[int64](3),
 			Set:    ptr.To(true),
 		},
 
-		BfExit: &api.V0041BfExitFields{
+		BfExit: &api.V0043BfExitFields{
 			BfMaxJobStart:   ptr.To[int32](4),
 			BfMaxJobTest:    ptr.To[int32](4),
 			BfMaxTime:       ptr.To[int32](4),
@@ -322,7 +322,7 @@ var (
 			StateChanged:    ptr.To[int32](4),
 		},
 
-		JobStatesTs: &api.V0041Uint64NoValStruct{
+		JobStatesTs: &api.V0043Uint64NoValStruct{
 			Number: ptr.To[int64](5),
 			Set:    ptr.To(true),
 		},
