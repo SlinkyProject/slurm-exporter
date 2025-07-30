@@ -33,6 +33,7 @@ All notable changes to this project will be documented in this file.
 
 - Changed `--server` default to localhost URL.
 - Changed slurm-client version to 0.3.0
+- Changed slurm-exporter.restapi.name to reference Helm release name
 
 ### Removed
 

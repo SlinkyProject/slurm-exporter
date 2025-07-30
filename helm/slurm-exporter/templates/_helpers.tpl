@@ -116,7 +116,7 @@ Determine exporter image reference (repo:tag)
 Define restapi name
 */}}
 {{- define "slurm-exporter.restapi.name" -}}
-{{- printf "slurm-restapi" -}}
+{{- printf "%s-restapi" (.Release.Name) -}}
 {{- end }}
 
 {{/*
