@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Changed Slurm API to v43.
+- Changed slurm-client version to 0.3.1
 
 ### Removed
 
