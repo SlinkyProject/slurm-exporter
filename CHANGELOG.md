@@ -10,6 +10,16 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+## v0.3.1
+
+### Added
+
+### Fixed
+
+- Fixed image tag incorrectly defaulting to appVersion instead of version.
+
+### Changed
+
 - Changed Slurm API to v43.
 - Changed slurm-client version to 0.3.1
 
@@ -29,7 +39,6 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Fixed image tag incorrectly defaulting to appVersion instead of version.
 - Fixed update strategies employing `Recreate` when unnecessary.
 
 ### Changed
