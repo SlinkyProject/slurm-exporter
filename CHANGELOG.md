@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+- Fixed app version to use 25.05
+
 ### Changed
 
 - Changed Slurm API to v43.

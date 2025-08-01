@@ -3,7 +3,7 @@ annotations:
   category: HPC
   licenses: Apache-2.0
 apiVersion: v2
-appVersion: "24.11"
+appVersion: "25.05"
 description: Helm Chart for Slurm Prometheus Exporter
 name: slurm-exporter
 type: application
