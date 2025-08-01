@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fixed image tag incorrectly defaulting to appVersion instead of version.
+- Fixed app version to use 25.05
 
 ### Changed
 
