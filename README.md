@@ -25,6 +25,7 @@ project.
     - [User Statistics](#user-statistics)
   - [Limitations](#limitations)
   - [Installation](#installation)
+  - [Support and Development](#support-and-development)
   - [License](#license)
 
 <!-- mdformat-toc end -->
@@ -110,6 +111,17 @@ helm install slurm-exporter oci://ghcr.io/slinkyproject/charts/slurm-exporter \
   --namespace=slurm-exporter --create-namespace
 ```
 
+## Support and Development
+
+Feature requests, code contributions, and bug reports are welcome!
+
+Github/Gitlab submitted issues and PRs/MRs are handled on a best effort basis.
+
+The SchedMD official issue tracker is at <https://support.schedmd.com/>.
+
+To schedule a demo or simply to reach out, please
+[contact SchedMD][contact-schedmd].
+
 ## License
 
 Copyright (C) SchedMD LLC.
@@ -125,6 +137,7 @@ specific language governing permissions and limitations under the License.
 
 <!-- links -->
 
+[contact-schedmd]: https://www.schedmd.com/slurm-resources/contact-schedmd/
 [helm]: https://helm.sh/
 [job-states]: https://slurm.schedmd.com/job_state_codes.html#states
 [node-allocated]: https://slurm.schedmd.com/sinfo.html#OPT_ALLOCATED
