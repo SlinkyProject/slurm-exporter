@@ -1,10 +1,23 @@
 ---
-annotations:
-  category: HPC
-  licenses: Apache-2.0
 apiVersion: v2
-appVersion: "25.05"
-description: Helm Chart for Slurm Prometheus Exporter
+kubeVersion: ">= 1.29"
+
 name: slurm-exporter
+description: Slurm Metrics Prometheus Exporter
 type: application
+appVersion: "25.05"
 version: 0.4.0
+
+annotations:
+  license: Apache-2.0
+
+home: https://slinky.schedmd.com/
+icon: https://github.com/SlinkyProject/docs/blob/main/docs/_static/images/slurm-square-500.png
+
+sources:
+  - https://github.com/SlinkyProject/slurm-exporter
+
+maintainers:
+  - name: SchedMD LLC.
+    email: slinky@schedmd.com
+    url: https://support.schedmd.com/

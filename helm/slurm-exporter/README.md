@@ -2,7 +2,23 @@
 
 ![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 25.05](https://img.shields.io/badge/AppVersion-25.05-informational?style=flat-square)
 
-Helm Chart for Slurm Prometheus Exporter
+Slurm Metrics Prometheus Exporter
+
+**Homepage:** <https://slinky.schedmd.com/>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| SchedMD LLC. | <slinky@schedmd.com> | <https://support.schedmd.com/> |
+
+## Source Code
+
+* <https://github.com/SlinkyProject/slurm-exporter>
+
+## Requirements
+
+Kubernetes: `>= 1.29`
 
 ## Values
 
