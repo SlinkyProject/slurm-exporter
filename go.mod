@@ -5,7 +5,7 @@ go 1.24.0
 toolchain go1.24.3
 
 require (
-	github.com/SlinkyProject/slurm-client v0.3.1-20250801102150-043094ce1e4e
+	github.com/SlinkyProject/slurm-client v0.4.0-20250912114233-d75113f34f05
 	github.com/google/go-cmp v0.7.0
 	github.com/prometheus/client_golang v1.23.2
 	github.com/stretchr/testify v1.11.1
