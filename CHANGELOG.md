@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+### Changed
+
+### Removed
+
+## v0.4.0
+
+### Added
+
+### Fixed
+
 - Fixed app version to use 25.05
 
 ### Changed
