@@ -22,7 +22,7 @@ target "_common" {
   labels = {
     # Ref: https://github.com/opencontainers/image-spec/blob/v1.0/annotations.md
     "org.opencontainers.image.authors" = "slinky@schedmd.com"
-    "org.opencontainers.image.documentation" = "https://github.com/SlinkyProject/slurm-exporter"
+    "org.opencontainers.image.documentation" = "https://slinky.schedmd.com/"
     "org.opencontainers.image.license" = "Apache-2.0"
     "org.opencontainers.image.vendor" = "SchedMD LLC."
     "org.opencontainers.image.version" = "${VERSION}"
