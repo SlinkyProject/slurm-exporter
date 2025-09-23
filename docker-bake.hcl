@@ -48,20 +48,3 @@ target "exporter" {
     format_tag("${REGISTRY}", "slurm-exporter", "${VERSION}"),
   ]
 }
-
-################################################################################
-
-group "dev" {
-  targets = ["exporter-dev"]
-}
-
-target "exporter-dev" {
-  inherits = ["exporter"]
-  contexts = {
-    builder = "target:builder-dev"
-  }
-}
-
-target "builder-dev" {
-  dockerfile = "Dockerfile.dev"
-}

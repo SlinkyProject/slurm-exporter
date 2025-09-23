@@ -88,13 +88,6 @@ docker-bake: ## Build images
 docker-bake-push: ## Build and push images
 	docker buildx bake --push
 
-.PHONY: docker-bake-dev
-docker-bake-dev: ## Build development images
-	CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} \
-		go build -o bin/exporter cmd/main.go
-	DOCKER_BAKE_REGISTRY=$(REGISTRY) VERSION=$(VERSION) \
-		docker buildx bake dev
-
 ##@ Build Dependencies
 
 ## Location to install dependencies to
