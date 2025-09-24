@@ -13,35 +13,11 @@ profiles:
           context: ../../
           docker:
             dockerfile: Dockerfile
-    deploy:
-      helm:
-        releases:
-          - name: slurm-exporter
-            chartPath: ./
-            valuesFiles:
-              - ./values-dev.yaml
-            setValueTemplates:
-              exporter.image.repository: '{{.IMAGE_REPO_slinky_slurm_net_slurm_exporter}}'
-              exporter.image.tag: '{{.IMAGE_TAG_slinky_slurm_net_slurm_exporter}}'
-            namespace: slurm
-            createNamespace: true
-  - name: dev2
-    build:
-      artifacts:
-        - image: slinky.slurm.net/slurm-exporter
-          custom:
-            buildCommand: >-
-              VERSION=$IMAGE_TAG
-              make
-              -C ../../
-              docker-bake-dev
-            dependencies:
-              paths:
-                - ../../**/*.go
-                - ../../docker-bake.hcl
-                - ../../Dockerfile*
-              ignore:
-                - vendor/**
+      tagPolicy:
+        inputDigest: {}
+      local:
+        useDockerCLI: true
+        push: false
     deploy:
       helm:
         releases:

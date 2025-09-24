@@ -57,15 +57,29 @@ help: ## Display this help.
 all: build ## Build slurm-exporter.
 
 REGISTRY ?= slinky.slurm.net
+BUILDER ?= project-v3-builder
 
 .PHONY: build
-build: ## Build container images.
-	REGISTRY=$(REGISTRY) VERSION=$(VERSION) docker buildx bake
+build: build-images build-chart ## Build OCI packages.
+
+.PHONY: build-images
+build-images: ## Build container images.
+	- $(CONTAINER_TOOL) buildx create --name $(BUILDER)
+	REGISTRY=$(REGISTRY) VERSION=$(VERSION) $(CONTAINER_TOOL) buildx bake --builder=$(BUILDER)
+
+.PHONY: build-chart
+build-chart: ## Build charts.
 	$(foreach chart, $(wildcard ./helm/**/Chart.yaml), helm package --dependency-update helm/$(shell basename "$(shell dirname "${chart}")") ;)
 
 .PHONY: push
-push: build ## Push container images.
-	REGISTRY=$(REGISTRY) VERSION=$(VERSION) docker buildx bake --push
+push: push-images push-charts ## Push OCI packages.
+
+.PHONY: push-images
+push-images: build-images ## Push container images.
+	REGISTRY=$(REGISTRY) VERSION=$(VERSION) $(CONTAINER_TOOL) buildx bake --builder=$(BUILDER) --push
+
+.PHONY: push-charts
+push-charts: build-chart ## Push OCI packages.
 	$(foreach chart, $(wildcard ./*.tgz), helm push ${chart} oci://$(REGISTRY)/charts ;)
 
 .PHONY: clean
@@ -74,26 +88,11 @@ clean: ## Clean executable files.
 	rm -rf bin/
 	rm -f cover.out cover.html
 	rm -f *.tgz
+	- $(CONTAINER_TOOL) buildx rm $(BUILDER)
 
 .PHONY: run
 run: fmt tidy vet ## Run the exporter from your host.
 	go run ./cmd/main.go
-
-.PHONY: docker-bake
-docker-bake: ## Build images
-	DOCKER_BAKE_REGISTRY=$(REGISTRY) VERSION=$(VERSION) \
-		docker buildx bake
-
-.PHONY: docker-bake-push
-docker-bake-push: ## Build and push images
-	docker buildx bake --push
-
-.PHONY: docker-bake-dev
-docker-bake-dev: ## Build development images
-	CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} \
-		go build -o bin/exporter cmd/main.go
-	DOCKER_BAKE_REGISTRY=$(REGISTRY) VERSION=$(VERSION) \
-		docker buildx bake dev
 
 ##@ Build Dependencies
 

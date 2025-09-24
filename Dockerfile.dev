@@ -1,9 +1,0 @@
-# syntax=docker/dockerfile:1
-# SPDX-FileCopyrightText: Copyright (C) SchedMD LLC.
-# SPDX-License-Identifier: Apache-2.0
-
-FROM alpine:latest AS builder
-
-WORKDIR /workspace
-
-COPY bin/exporter ./exporter

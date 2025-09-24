@@ -18,6 +18,31 @@ function "format_tag" {
 
 ################################################################################
 
+target "_common" {
+  labels = {
+    # Ref: https://github.com/opencontainers/image-spec/blob/v1.0/annotations.md
+    "org.opencontainers.image.authors" = "slinky@schedmd.com"
+    "org.opencontainers.image.documentation" = "https://slinky.schedmd.com/"
+    "org.opencontainers.image.license" = "Apache-2.0"
+    "org.opencontainers.image.vendor" = "SchedMD LLC."
+    "org.opencontainers.image.version" = "${VERSION}"
+    "org.opencontainers.image.source" = "https://github.com/SlinkyProject/slurm-exporter"
+    # Ref: https://docs.redhat.com/en/documentation/red_hat_software_certification/2025/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction#con-image-metadata-requirements_openshift-sw-cert-policy-container-images
+    "vendor" = "SchedMD LLC."
+    "version" = "${VERSION}"
+    "release" = "https://github.com/SlinkyProject/slurm-exporter"
+  }
+}
+
+target "_multiarch" {
+  platforms = [
+    "linux/amd64",
+    "linux/arm64"
+  ]
+}
+
+################################################################################
+
 group "default" {
   targets = [
     "exporter",
@@ -25,21 +50,13 @@ group "default" {
 }
 
 target "exporter" {
+  inherits = ["_common", "_multiarch"]
   dockerfile = "Dockerfile"
   labels = {
     # Ref: https://github.com/opencontainers/image-spec/blob/v1.0/annotations.md
-    "org.opencontainers.image.authors" = "slinky@schedmd.com"
-    "org.opencontainers.image.documentation" = "https://github.com/SlinkyProject/slurm-exporter"
-    "org.opencontainers.image.license" = "Apache-2.0"
-    "org.opencontainers.image.vendor" = "SchedMD LLC."
-    "org.opencontainers.image.version" = "${VERSION}"
-    "org.opencontainers.image.source" = "https://github.com/SlinkyProject/slurm-exporter"
     "org.opencontainers.image.title" = "Slurm Exporter"
     "org.opencontainers.image.description" = "Prometheus collector and exporter for metrics extracted from Slurm"
     # Ref: https://docs.redhat.com/en/documentation/red_hat_software_certification/2025/html/red_hat_openshift_software_certification_policy_guide/assembly-requirements-for-container-images_openshift-sw-cert-policy-introduction#con-image-metadata-requirements_openshift-sw-cert-policy-container-images
-    "vendor" = "SchedMD LLC."
-    "version" = "${VERSION}"
-    "release" = "https://github.com/SlinkyProject/slurm-exporter"
     "name" = "Slurm Exporter"
     "summary" = "Prometheus collector and exporter for metrics extracted from Slurm"
     "description" = "Prometheus collector and exporter for metrics extracted from Slurm"
@@ -47,21 +64,4 @@ target "exporter" {
   tags = [
     format_tag("${REGISTRY}", "slurm-exporter", "${VERSION}"),
   ]
-}
-
-################################################################################
-
-group "dev" {
-  targets = ["exporter-dev"]
-}
-
-target "exporter-dev" {
-  inherits = ["exporter"]
-  contexts = {
-    builder = "target:builder-dev"
-  }
-}
-
-target "builder-dev" {
-  dockerfile = "Dockerfile.dev"
 }
