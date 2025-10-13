@@ -11,6 +11,9 @@ metadata:
   namespace: {{ include "slurm-exporter.namespace" . }}
   labels:
     {{- include "slurm-exporter.labels" . | nindent 4 }}
+    {{- with .Values.exporter.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   endpoints:
   - interval: 5s

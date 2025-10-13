@@ -88,6 +88,13 @@ exporter:
   # Service monitor configurations.
   serviceMonitor:
     enabled: true
+    #
+    # -- (object)
+    # Additional labels to add to the ServiceMonitor resource.
+    # These labels can be used by Prometheus to discover the ServiceMonitor.
+    # Ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/getting-started/design.md#servicemonitor
+    # Helm Usage: `helm upgrade -i ... --set exporter.serviceMonitor.labels.release=kube-prometheus-stack`
+    labels: {}
     endpoints:
       - port: metrics
         path: /metrics
