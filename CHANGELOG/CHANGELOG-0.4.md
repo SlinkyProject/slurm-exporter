@@ -1,7 +1,12 @@
-# ChangeLog
+## v0.4.1
 
-All notable changes to this project will be documented in this file.
+## v0.4.0
 
-## v0.1.0
+### Fixed
 
-- Initial project release.
+- Fixed app version to use 25.05.
+
+### Changed
+
+- Changed Slurm API to v43.
+- Changed `slurm-exporter.restapi.name` to reference Helm release name.
