@@ -12,6 +12,10 @@
 [Prometheus] collector and exporter of [Slurm] cluster metrics. A [Slinky]
 project.
 
+> [!WARNING]
+> This repository is no longer maintained. Please consider migration to
+> [Slurm 25.11 metrics plugin][slurm-metrics].
+
 ## Table of Contents
 
 <!-- mdformat-toc start --slug=github --no-anchors --maxlevel=6 --minlevel=1 -->
@@ -153,4 +157,5 @@ specific language governing permissions and limitations under the License.
 [prometheus]: https://prometheus.io/
 [slinky]: https://slinky.ai/
 [slurm]: https://slurm.schedmd.com/overview.html
+[slurm-metrics]: https://slurm.schedmd.com/metrics.html
 [slurm-restapi]: https://slurm.schedmd.com/rest_api.html
